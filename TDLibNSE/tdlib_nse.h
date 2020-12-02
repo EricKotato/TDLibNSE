@@ -9,7 +9,7 @@ public:
 	TDLib() {}
 
 	int createClient() {
-		return td_create_client();
+		return td_create_client_id();
 	}
 
 	sciter::value send(int client_id, sciter::string request) {
