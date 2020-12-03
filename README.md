@@ -75,7 +75,10 @@ API in TDLibNSE is pretty much same as TDLib new JSON interface.
 * `void TDLib.send(int client_id, string request)` – sends request JSON encoded string to specified client_id.
 * `string TDLib.receive(double timeout)` – polls for new updates from clients for timeout, returns JSON encoded string of response.
 * `void TDLib.startReceiveThread(double timeout, function callback)` – polls for new updates from clients for timeout in separate thread, calls `callback` with returns JSON encoded string of response.
-  * Callback signature is `void callback(string result)`.
+  * Callback signature is `int callback(string result)`.
+    * Return `-1` in callback to stop thread.
+    * Return `0` in callback to specify no delay.
+    * Return a positive number to specify a delay in milliseconds.
   * When thread is started, first JSON received will be `{"tdlibnse":"receive_thread_started"}`.
 * `void TDLib.stopReceiveThread()` – stops polling for updates in thread.
   * When thread is stopped, last JSON received will be `{"tdlibnse":"receive_thread_stopped"}`.

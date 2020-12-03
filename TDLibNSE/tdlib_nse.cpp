@@ -11,14 +11,20 @@ struct threadParams {
 };
 
 void receiveThread(threadParams params) {
+	int delay = 0;
 	const auto startChars = aux::utf2w("{\"tdlibnse\":\"receive_thread_started\"}");
-	params.callback.call(sciter::string(startChars.c_str(), startChars.length()));
+	delay = params.callback.call(sciter::string(startChars.c_str(), startChars.length())).get(0);
 
-	while (receive_thread_running) {
-		const auto updateChars = aux::utf2w(td_receive(params.timeout));
-		if (updateChars.length()) {
-			params.callback.call(sciter::string(updateChars.c_str(), updateChars.length()));
+	while (delay >= 0 && receive_thread_running) {
+		if (delay > 0) {
+			::Sleep(delay);
 		}
+		const auto updateChars = aux::utf2w(td_receive(params.timeout));
+		delay = params.callback.call(sciter::string(updateChars.c_str(), updateChars.length())).get(0);
+	}
+
+	if (receive_thread_running) {
+		receive_thread_running = false;
 	}
 
 	const auto endChars = aux::utf2w("{\"tdlibnse\":\"receive_thread_stopped\"}");
