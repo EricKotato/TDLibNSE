@@ -1,6 +1,8 @@
 #pragma once
+#include <set>
 #include <td/telegram/td_json_client.h>
 #include "sciter-x.h"
+#include "sciter-x-threads.h"
 
 namespace tdlibnse {
 
@@ -29,13 +31,20 @@ public:
 		return sciter::string(chars.c_str(), chars.length());
 	}
 
+	sciter::value startReceiveThread(double timeout, sciter::value callback);
+	sciter::value stopReceiveThread();
+	bool receiveThreadRunning();
+
 	SOM_PASSPORT_BEGIN(TDLib)
 		SOM_PASSPORT_FLAGS(SOM_EXTENDABLE_OBJECT)
 		SOM_FUNCS(
 			SOM_FUNC(createClient),
 			SOM_FUNC(send),
 			SOM_FUNC(receive),
-			SOM_FUNC(execute)
+			SOM_FUNC(execute),
+			SOM_FUNC(startReceiveThread),
+			SOM_FUNC(stopReceiveThread),
+			SOM_FUNC(receiveThreadRunning)
 		)
 	SOM_PASSPORT_END
 };
