@@ -85,6 +85,9 @@ API in TDLibNSE is pretty much same as TDLib new JSON interface.
 * `bool TDLib.receiveThreadRunning()` – returns `true` if polling thread is running.
 * `string TDLib.execute(string request)` – sends request JSON encoded string to TDLib, returns JSON encoded string of response.
 
+## Recommendations
+* For some reason, if `setLogVerbosityLevel` is not set, TDLib may eat your CPU even if you specified a delay in receive thread.
+
 ## Example usage
 
 ```html
