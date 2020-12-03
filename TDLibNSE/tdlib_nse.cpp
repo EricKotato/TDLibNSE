@@ -11,18 +11,18 @@ struct threadParams {
 };
 
 void receiveThread(threadParams params) {
-	auto chars = aux::utf2w("{\"tdlibnse\":\"receive_thread_started\"}");
-	params.callback.call(sciter::string(chars.c_str(), chars.length()));
+	const auto startChars = aux::utf2w("{\"tdlibnse\":\"receive_thread_started\"}");
+	params.callback.call(sciter::string(startChars.c_str(), startChars.length()));
 
 	while (receive_thread_running) {
-		chars = aux::utf2w(td_receive(params.timeout));
-		if (chars.length()) {
-			params.callback.call(sciter::string(chars.c_str(), chars.length()));
+		const auto updateChars = aux::utf2w(td_receive(params.timeout));
+		if (updateChars.length()) {
+			params.callback.call(sciter::string(updateChars.c_str(), updateChars.length()));
 		}
 	}
 
-	chars = aux::utf2w("{\"tdlibnse\":\"receive_thread_stopped\"}");
-	params.callback.call(sciter::string(chars.c_str(), chars.length()));
+	const auto endChars = aux::utf2w("{\"tdlibnse\":\"receive_thread_stopped\"}");
+	params.callback.call(sciter::string(endChars.c_str(), endChars.length()));
 }
 
 } // namespace
