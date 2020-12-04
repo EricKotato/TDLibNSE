@@ -30,6 +30,8 @@ Omit `-A Win32` to use your default system architecture.
 
 Omit any of `-DTD_DIR` and `-DSCITER_INCLUDE_DIR` (or all) to search packages in default paths.
 
+You can also add `-DUSE_STATIC_TDJSON=ON` to `cmake` arguments if you want it to link extension against static library instead of dynamic.
+
 
 Build (starting from C:\TDLibNSE\build):
 ```
