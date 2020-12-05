@@ -17,7 +17,7 @@ void receiveThread(threadParams params) {
 
 	while (delay >= 0 && receive_thread_running) {
 		if (delay > 0) {
-#ifdef WIN32
+#ifdef WINDOWS
 			::Sleep(delay);
 #else
 			::sleep(delay);
