@@ -29,6 +29,8 @@ else()
 endif()
 
 add_library(TDLibNSE SHARED tdlib_nse.cpp)
+
+set_target_properties(TDLibNSE PROPERTIES PREFIX "")
 target_include_directories(TDLibNSE	PUBLIC ${SCITER_INCLUDE_DIR} ${GTK3_INCLUDE_DIRS})
 
 if (UNIX)
