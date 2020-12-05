@@ -1,13 +1,20 @@
 # TDLib Native Sciter Extension
 
-Simple [Sciter](https://sciter.com) native extension for TDLib's JSON interface. Tested on Windows with Visual Studio 2019, possible (but haven't tested yet) to work on Linux.
+Simple [Sciter](https://sciter.com) native extension for TDLib's JSON interface. Tested on Windows with Visual Studio 2019, and Linux Mint 20 with GCC 9.3.0.
 
 ## Prerequisites to build
 
 * CMake
-* Visual Studio (on Windows) or any other CMake supported compiler
+* Visual Studio (on Windows), GCC or any other CMake supported compiler
 * TDLib (as CMake package)
 * Sciter SDK
+
+### Linux prerequisites
+
+If you're building on Linux, you also need those packages:
+
+* GTK3
+* Ninja
 
 ## Build process
 
@@ -23,14 +30,16 @@ Generate build files (starting from C:\TDLibNSE):
 ```
 mkdir build
 cd build
-cmake -A Win32 -DTd_DIR=C:\TDLib\lib\cmake\Td -DSCITER_INCLUDE_DIR=C:\sciter\include ..\TDLibNSE
+cmake -A Win32 -DTd_DIR=C:\TDLib\lib\cmake\Td -DSCITER_INCLUDE_DIR=C:\sciter\include -G"Visual Studio 16 2019" ..\TDLibNSE
 ```
 
-Omit `-A Win32` to use your default system architecture.
+Omit `-A Win32` to use your default system architecture. You probably don't need it on Linux either.
 
 Omit any of `-DTD_DIR` and `-DSCITER_INCLUDE_DIR` (or all) to search packages in default paths.
 
 You can also add `-DUSE_STATIC_TDJSON=ON` to `cmake` arguments if you want it to link extension against static library instead of dynamic.
+
+On Linux use `-G"Ninja"` instead of `-G"Visual Studio 16 2019"`.
 
 
 Build (starting from C:\TDLibNSE\build):
@@ -45,6 +54,8 @@ Omit `--config Release` if you wan't to build default configuration `Debug`. You
 
 ## Using the library
 
+### Windows-specific
+
 On Windows you need to following files to be put near scapp.exe or to be found in system paths:
 * TDLibNSE.dll (your built file, can be found in C:\TDLibNSE\build\Release or C:\TDLibNSE\build\Debug)
 * tdjson.dll (TDLib with JSON interface, can be found at C:\TDLib\bin)
@@ -53,6 +64,16 @@ On Windows you need to following files to be put near scapp.exe or to be found i
 * zlib1.dll (TDLib prereqisites)
 
 If you have installed TDLib prerequisites from vcpkg and installed vcpkg to C:\vcpkg, these files can be found at C:\vcpkg\installed\x86-windows\bin (or vcpkg\installed\x64-windows\bin for x64).
+
+### Linux-specific
+
+On Linux you need to following files to be put near scapp binary or to be found in system paths:
+* libTDLibNSE.so (your built file, can be found in your build path, it's better to rename it to `TDLibNSE.so`)
+* libtdjson.so.1.7.0 (TDLib with JSON interface at `<TDLib install path>/lib`)
+
+You may also need OpenSSL to be installed in your system.
+
+### Usage in code
 
 After that, you can include it in your Sciter HTML file as:
 ```
@@ -88,7 +109,7 @@ API in TDLibNSE is pretty much same as TDLib new JSON interface.
 * `string TDLib.execute(string request)` – sends request JSON encoded string to TDLib, returns JSON encoded string of response.
 
 ## Recommendations
-* For some reason, if `setLogVerbosityLevel` is not set, TDLib may eat your CPU even if you specified a delay in receive thread.
+* For some reason, if `setLogVerbosityLevel` is not set, TDLib may eat your CPU even if you specified a delay in receive thread. Setting it to `0` if you don't care about logs.
 
 ## Example usage
 
