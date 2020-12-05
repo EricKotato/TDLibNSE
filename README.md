@@ -73,6 +73,8 @@ On Linux you need to following files to be put near scapp binary or to be found 
 
 You may also need OpenSSL to be installed in your system.
 
+To reduce your .so files size, you can use `strip -s` on them.
+
 ### Usage in code
 
 After that, you can include it in your Sciter HTML file as:
