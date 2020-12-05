@@ -17,7 +17,11 @@ void receiveThread(threadParams params) {
 
 	while (delay >= 0 && receive_thread_running) {
 		if (delay > 0) {
+#ifdef WIN32
 			::Sleep(delay);
+#else
+			::sleep(delay);
+#endif
 		}
 		const auto updateChars = aux::utf2w(td_receive(params.timeout));
 		delay = params.callback.call(sciter::string(updateChars.c_str(), updateChars.length())).get(0);
